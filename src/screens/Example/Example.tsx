@@ -15,6 +15,7 @@ import { useTheme } from '../../hooks';
 import { useLazyFetchOneQuery } from '../../services/modules/users';
 import { changeTheme, ThemeState } from '../../store/theme';
 import i18next from 'i18next';
+import { Box } from 'SfccApiRnExample/src/atoms';
 
 const Example = () => {
   const { t } = useTranslation(['example', 'welcome']);
@@ -64,16 +65,17 @@ const Example = () => {
           Layout.alignItemsCenter,
         ]}
       >
-        <View
+        <Box
           style={[
             Layout.absolute,
             {
               height: 250,
               width: 250,
-              backgroundColor: isDark ? '#000000' : '#DFDFDF',
+              // backgroundColor: isDark ? '#000000' : '#DFDFDF',
               borderRadius: 140,
             },
           ]}
+          backgroundColor="background"
         />
         <Image
           style={[
