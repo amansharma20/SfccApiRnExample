@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { applicationProperties } from 'SfccApiRnExample/src/utils/application.properties';
+import { useNavigation } from '@react-navigation/native';
 const CategorySection = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [categoriesData, setCategoriesData] = useState([]);
   const animation = useRef(new Animated.Value(0)).current;
-
+  const navigation = useNavigation();
   const renderCategory = ({ item }) => {
     // console.log('item: ', item?.categories?.length > 0);
     const subCategoriesExist = item?.categories?.length > 0;
@@ -25,9 +26,21 @@ const CategorySection = () => {
       }),
       opacity: animation,
     };
+
+    const onPressHeader = () => {
+      navigation.navigate('ProductsListScreen', {
+        id: item?.id,
+      });
+    };
     return (
       <Box>
-        <TouchableOpacity style={styles.item} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={styles.item}
+          activeOpacity={0.8}
+          onPress={onPressHeader(() => {
+            console.log('trigerred');
+          })}
+        >
           <View style={styles.itemContainer}>
             <Text style={styles.itemText}>{item.name} </Text>
             <Text>{subCategoriesExist ? '-' : '+'}</Text>
