@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Animated,
   View,
+  Button,
 } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { applicationProperties } from 'SfccApiRnExample/src/utils/application.properties';
@@ -17,7 +18,6 @@ const CategorySection = () => {
   const animation = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
   const renderCategory = ({ item }) => {
-    // console.log('item: ', item?.categories?.length > 0);
     const subCategoriesExist = item?.categories?.length > 0;
     const expandStyle = {
       maxHeight: animation.interpolate({
@@ -28,18 +28,17 @@ const CategorySection = () => {
     };
 
     const onPressHeader = () => {
-      navigation.navigate('ProductsListScreen', {
-        id: item?.id,
-      });
+      // console.log('onPressHeader: ');
+      //   navigation.navigate('ProductsListScreen', {
+      //     id: item?.id,
+      //   });
     };
     return (
       <Box>
         <TouchableOpacity
           style={styles.item}
           activeOpacity={0.8}
-          onPress={onPressHeader(() => {
-            console.log('trigerred');
-          })}
+          onPress={() => console.log('Touchable Pressed')}
         >
           <View style={styles.itemContainer}>
             <Text style={styles.itemText}>{item.name} </Text>
@@ -66,12 +65,12 @@ const CategorySection = () => {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
-        //   onPress={() => {
-        //     navigation.navigate('ProductsListScreen', {
-        //       nodeId: item?.nodeId,
-        //       title: item?.name,
-        //     });
-        //   }}
+        onPress={() => {
+          navigation.navigate('ProductsListScreen', {
+            cgid: item?.id,
+            cgName: item?.name,
+          });
+        }}
         style={styles.subCategoryItem}
       >
         <Text style={styles.expandedText}>{item?.name}</Text>
@@ -85,9 +84,8 @@ const CategorySection = () => {
     async function getCategories() {
       try {
         const response = await commonApi.get(
-          `categories/(mens,womens)?${applicationProperties.clientId}`,
+          `categories/(mens,womens,electronics)?${applicationProperties.clientId}`,
         );
-        console.log('response: ', response);
         if (response.data.status === 200) {
           setCategoriesData(response?.data?.data?.data);
           setIsLoading(false);

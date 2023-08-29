@@ -12,7 +12,7 @@ const MainNavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {/* <Stack.Screen name="Home" component={Example} /> */}
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="ProductList" component={ProductsListScreen} />
+      <Stack.Screen name="ProductsListScreen" component={ProductsListScreen} />
 
     </Stack.Navigator>
   );
