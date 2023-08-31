@@ -2,11 +2,13 @@ import { Box, Text } from "SfccApiRnExample/src/atoms";
 import React from "react";
 import {Alert, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import CommonHeader from "../commonHeader/CommonHeader";
+import {useNavigation} from '@react-navigation/native';
 
 interface ProductItemProps {
   item: Record<string, any>; // Adjust the type to match your actual structure
 }
 const ProductItem:React.FC<ProductItemProps>= ({ item }) => {
+  const navigation = useNavigation();
      return (
     <Box
       // flex={1}
@@ -18,7 +20,11 @@ const ProductItem:React.FC<ProductItemProps>= ({ item }) => {
       borderRadius={8}
       flex={1}
       padding="s8">
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>{
+      navigation.navigate('ProductDetailsScreen',{
+        productId:item.product_id
+      });
+      }}>
         <Box alignItems="center">
           <Image
             source={{uri: item?.image?.dis_base_link}}

@@ -45,8 +45,8 @@ const renderItems=({item,index}:RenderItemProps)=>(
     getProducts();
   }, [cgid]);
   return (
-  <Box flex={1} paddingHorizontal="paddingHorizontal" paddingTop="s8">
-    <CommonHeader title='Products' />
+  <Box backgroundColor='white' flex={1} paddingHorizontal="paddingHorizontal" paddingTop="s8">
+    <CommonHeader title='product list' />
      <FlatList
         data={products}
         renderItem={renderItems}

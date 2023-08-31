@@ -4,6 +4,7 @@ import {SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import { Box, Text, theme } from 'SfccApiRnExample/src/atoms';
 import React, { FC } from 'react';
+import { GoBack } from 'SfccApiRnExample/src/assets/svgs';
 interface CommonHeaderProps {
   title: string;
 }

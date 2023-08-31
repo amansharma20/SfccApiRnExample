@@ -3,6 +3,7 @@ import { Example } from '../screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/home/HomeScreen';
 import ProductsListScreen from '../screens/product/ProductsListScreen';
+import ProductDetailsScreen from '../screens/product/ProductDetailScreen';
 
 const Stack = createStackNavigator();
 
@@ -13,6 +14,7 @@ const MainNavigator = () => {
       {/* <Stack.Screen name="Home" component={Example} /> */}
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="ProductsListScreen" component={ProductsListScreen} />
+      <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
 
     </Stack.Navigator>
   );

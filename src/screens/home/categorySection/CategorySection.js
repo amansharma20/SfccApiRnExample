@@ -86,6 +86,7 @@ const CategorySection = () => {
         const response = await commonApi.get(
           `categories/(mens,womens,electronics)?${applicationProperties.clientId}`,
         );
+
         if (response.data.status === 200) {
           setCategoriesData(response?.data?.data?.data);
           setIsLoading(false);
