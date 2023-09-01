@@ -450,6 +450,7 @@ export const themeDark = createTheme({
     darkRed: '#83042A',
     snowy: '#F9F9F9',
     lightBlueBg: '#E8F5FF',
+    darkGrey:'#ccc',
     ...globalPallete,
   },
 });

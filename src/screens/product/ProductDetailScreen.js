@@ -12,18 +12,26 @@ import {
   Alert,
 } from 'react-native';
 import { commonApi } from 'SfccApiRnExample/src/api/CommanAPI';
-
 import { useNavigation } from '@react-navigation/native';
 import { Box, Text, theme } from 'SfccApiRnExample/src/atoms';
 import CommonHeader from 'SfccApiRnExample/src/components/commonHeader/CommonHeader';
 import axios from 'axios';
 import { applicationProperties } from 'SfccApiRnExample/src/utils/application.properties';
-
+import CarouselCards from 'SfccApiRnExample/src/components/imageCarousel/CarouselCards';
+import Badge from 'SfccApiRnExample/src/assets/badge/Badge';
+import SizeBox from './component/SizeBox';
+import ColorSwatches from './component/ColorSwatches';
 const ProductDetailsScreen = props => {
   const productId = props.route.params.productId;
+  console.log('productId: ', productId);
   const [isLoading, setIsLoading] = useState(true);
   const [product, setProduct] = useState(null);
-  console.log('productId: ', productId);
+  const [selectedSize, setSelectedSize] = useState(
+    product?.variants?.[0]?.variation_values?.size,
+  );
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [imageCarousel, setImageCarousel] = useState([]);
+  console.log('selectedColor: ', selectedColor);
 
   const navigation = useNavigation();
 
@@ -32,11 +40,11 @@ const ProductDetailsScreen = props => {
     async function getProduct() {
       try {
         const response = await commonApi.get(
-          `products/${productId}?expand=images%2Cprices%2Cavailability%2Cvariations%2Cpromotions&${applicationProperties.clientId}`,
+          `products/25604455M?expand=images%2Cprices%2Cavailability%2Cvariations%2Cpromotions&${applicationProperties.clientId}&all_images=true`,
         );
         if (response.data.status === 200) {
-          console.log('response.data: ', response.data.data);
           setProduct(response?.data?.data);
+          setImageCarousel(response?.data?.data?.image_groups[0]?.images);
           setIsLoading(false);
         } else {
           setIsLoading(false);
@@ -48,6 +56,40 @@ const ProductDetailsScreen = props => {
     }
     getProduct();
   }, [productId]);
+
+  const renderSizeBox = ({ item }) => {
+    return (
+      <Box flexDirection="row" marginRight="s8">
+        <TouchableOpacity
+          onPress={() => {
+            setSelectedSize(item?.variation_values?.size);
+          }}
+        >
+          <SizeBox
+            selectedSize={selectedSize}
+            size={item?.variation_values?.size}
+          />
+        </TouchableOpacity>
+      </Box>
+    );
+  };
+
+  const renderColorSwatch = ({ item }) => {
+    if (item?.view_type != 'swatch') return;
+    return (
+      <Box flexDirection="row" marginRight="s8">
+        <TouchableOpacity
+          onPress={() => {
+            setSelectedColor(
+              item?.variation_attributes?.[0]?.values?.[0]?.value,
+            );
+          }}
+        >
+          <ColorSwatches selectedColor={selectedColor} item={item} />
+        </TouchableOpacity>
+      </Box>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <CommonHeader title={product?.page_title} />
@@ -64,24 +106,39 @@ const ProductDetailsScreen = props => {
           >
             {product ? (
               <Box style={styles.productDetails}>
-                <Image
-                  style={styles.backImage}
-                  source={{
-                    uri: product?.image_groups[0]?.images?.[0]?.link,
-                  }}
-                />
-                <Box></Box>
+                <CarouselCards images={imageCarousel} />
                 <Text variant="bold16" marginVertical="s4">
                   Description :{' '}
                 </Text>
                 <Text>{product?.page_description}</Text>
-                <Text
-                  mt="s6"
-                  variant="regular16"
-                  // style={{fontWeight: 'bold'}}
-                >
-                  Price {product?.price}
+                <Text mt="s6" variant="regular16">
+                  Price ${product?.price}
                 </Text>
+                <Box flexDirection="row">
+                  <Text marginRight="s12">Availability</Text>
+                  {product?.inventory?.orderable === true &&
+                  product?.inventory?.stock_level >= 1 ? (
+                    <Text color="green">In Stock</Text>
+                  ) : (
+                    <Text color="red">Not Available</Text>
+                  )}
+                </Box>
+                <Text fontSize={20} fontWeight="bold">
+                  Select Size: {selectedSize}
+                </Text>
+                <FlatList
+                  horizontal
+                  data={product?.variants}
+                  renderItem={renderSizeBox}
+                />
+                <Text fontSize={20} fontWeight="bold">
+                  Select Color:
+                </Text>
+                <FlatList
+                  horizontal
+                  data={product?.image_groups}
+                  renderItem={renderColorSwatch}
+                />
               </Box>
             ) : (
               <ActivityIndicator size="large" />

@@ -12,6 +12,7 @@ import { useFlipper } from '@react-navigation/devtools';
 import { ApplicationStackParamList } from '../../@types/navigation';
 import { ThemeProvider } from '@shopify/restyle';
 import { darkTheme, lightTheme } from '../atoms';
+import ProductsListScreen from '../screens/product/ProductsListScreen';
 
 const Stack = createStackNavigator<ApplicationStackParamList>();
 
